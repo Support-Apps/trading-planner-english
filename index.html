@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Trading Planner 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        @page {
+            size: A4;
+            margin: 15mm;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --gold: #c9a962;
+            --gold-light: #e8d5a3;
+            --accent: #7c6a56;
+            --success: #738f6e;
+            --danger: #a67272;
+            --text: #3d3630;
+            --text-light: #6b6158;
+            --border: #e6e0d6;
+            --bg-cream: #faf8f5;
+        }
+        
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: white;
+            color: var(--text);
+            line-height: 1.5;
+        }
+        
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 15mm;
+            margin: 0 auto;
+            background: white;
+            page-break-after: always;
+        }
+        
+        @media print {
+            body { background: white; }
+            .page { 
+                width: 100%; 
+                min-height: auto;
+                padding: 0;
+                margin: 0;
+            }
+            .no-print { display: none !important; }
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--gold);
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .logo-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8em;
+            font-weight: 600;
+            color: var(--accent);
+        }
+        
+        .logo-sub {
+            font-size: 0.9em;
+            color: var(--text-light);
+        }
+        
+        .week-info {
+            text-align: right;
+        }
+        
+        .week-label {
+            font-size: 0.85em;
+            color: var(--text-light);
+            margin-bottom: 4px;
+        }
+        
+        .week-input {
+            border: none;
+            border-bottom: 2px solid var(--border);
+            padding: 5px 0;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3em;
+            color: var(--accent);
+            width: 180px;
+            text-align: center;
+            background: transparent;
+        }
+        
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3em;
+            font-weight: 600;
+            color: var(--gold);
+            margin: 20px 0 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .weekly-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 0.85em;
+        }
+        
+        .weekly-table th {
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: var(--accent);
+            font-weight: 600;
+            padding: 10px 6px;
+            text-align: center;
+            border: 1px solid var(--gold);
+            font-size: 0.9em;
+        }
+        
+        .weekly-table td {
+            border: 1px solid var(--border);
+            padding: 12px 6px;
+            text-align: center;
+            height: 45px;
+        }
+        
+        .weekly-table tr:nth-child(even) {
+            background: var(--bg-cream);
+        }
+        
+        .weekly-table .day-cell {
+            font-weight: 600;
+            color: var(--accent);
+            background: rgba(201,169,98,0.1);
+            width: 90px;
+        }
+        
+        .weekly-table .total-row {
+            background: linear-gradient(135deg, rgba(201,169,98,0.15), rgba(232,213,163,0.15));
+            font-weight: 600;
+        }
+        
+        .weekly-table .total-row td {
+            border-top: 2px solid var(--gold);
+        }
+        
+        .goals-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .goal-box {
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+        }
+        
+        .goal-label {
+            font-size: 0.75em;
+            color: var(--text-light);
+            margin-bottom: 6px;
+        }
+        
+        .goal-input-line {
+            border: none;
+            border-bottom: 2px solid var(--border);
+            width: 80%;
+            padding: 4px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2em;
+            text-align: center;
+            color: var(--gold);
+        }
+        
+        .rules-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .rules-box {
+            border: 1.5px solid var(--border);
+            border-radius: 14px;
+            padding: 15px;
+        }
+        
+        .rules-box.danger {
+            border-color: var(--danger);
+            background: rgba(166,114,114,0.05);
+        }
+        
+        .rules-box.success {
+            border-color: var(--success);
+            background: rgba(115,143,110,0.05);
+        }
+        
+        .rules-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            font-size: 1em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .rules-box.danger .rules-title { color: var(--danger); }
+        .rules-box.success .rules-title { color: var(--success); }
+        
+        .rule-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 0;
+            font-size: 0.85em;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .rule-item:last-child {
+            border-bottom: none;
+        }
+        
+        .checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+        
+        .notes-box {
+            border: 1.5px solid var(--border);
+            border-radius: 14px;
+            padding: 15px;
+            min-height: 100px;
+        }
+        
+        .notes-lines {
+            margin-top: 10px;
+        }
+        
+        .note-line {
+            border-bottom: 1px solid var(--border);
+            height: 28px;
+        }
+        
+        .daily-section {
+            margin-top: 15px;
+        }
+        
+        .daily-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .daily-box {
+            border: 1.5px solid var(--border);
+            border-radius: 14px;
+            padding: 15px;
+        }
+        
+        .daily-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .daily-day {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            font-size: 1.1em;
+            color: var(--accent);
+        }
+        
+        .daily-date-input {
+            border: none;
+            border-bottom: 1px solid var(--border);
+            width: 80px;
+            font-size: 0.85em;
+            text-align: center;
+            padding: 2px;
+        }
+        
+        .daily-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 0;
+            font-size: 0.85em;
+        }
+        
+        .daily-label {
+            color: var(--text-light);
+        }
+        
+        .daily-input {
+            border: none;
+            border-bottom: 1px solid var(--border);
+            width: 70px;
+            text-align: center;
+            font-size: 0.9em;
+            padding: 2px;
+        }
+        
+        .mood-row {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 8px;
+        }
+        
+        .mood-circle {
+            width: 24px;
+            height: 24px;
+            border: 1.5px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9em;
+        }
+        
+        .quote-box {
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            padding: 15px 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+        .quote-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1em;
+            font-style: italic;
+            color: var(--accent);
+        }
+        
+        .summary-box {
+            border: 2px solid var(--gold);
+            border-radius: 14px;
+            padding: 15px;
+            margin-top: 15px;
+            background: rgba(201,169,98,0.05);
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            text-align: center;
+        }
+        
+        .summary-item .label {
+            font-size: 0.8em;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+        
+        .summary-item .value-line {
+            border-bottom: 2px solid var(--gold);
+            height: 30px;
+            margin: 0 auto;
+            width: 80%;
+        }
+        
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: var(--accent);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(201,169,98,0.4);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .print-btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Page 1: Weekly Overview -->
+    <div class="page">
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">📊</div>
+                <div>
+                    <div class="logo-text">Weekly Trading Planner</div>
+                    <div class="logo-sub">2026</div>
+                </div>
+            </div>
+            <div class="week-info">
+                <div class="week-label">Week Number:</div>
+                <input type="text" class="week-input" placeholder="___">
+                <div class="week-label" style="margin-top:8px">Dates:</div>
+                <input type="text" class="week-input" placeholder="___ - ___">
+            </div>
+        </header>
+        
+        <div class="section-title">🎯 My Goals This Week</div>
+        <div class="goals-grid">
+            <div class="goal-box">
+                <div class="goal-label">Starting Capital</div>
+                <input type="text" class="goal-input-line" placeholder="$">
+            </div>
+            <div class="goal-box">
+                <div class="goal-label">Profit Target (%)</div>
+                <input type="text" class="goal-input-line" placeholder="%">
+            </div>
+            <div class="goal-box">
+                <div class="goal-label">Max Loss (%)</div>
+                <input type="text" class="goal-input-line" placeholder="%">
+            </div>
+            <div class="goal-box">
+                <div class="goal-label">Risk Per Trade (%)</div>
+                <input type="text" class="goal-input-line" placeholder="%">
+            </div>
+        </div>
+        
+        <div class="section-title">📊 Weekly Tracking Table</div>
+        <table class="weekly-table">
+            <thead>
+                <tr>
+                    <th>Day</th>
+                    <th>Date</th>
+                    <th>Starting<br>Capital</th>
+                    <th>Target<br>Profit (%)</th>
+                    <th>Max<br>Loss (%)</th>
+                    <th>Ending<br>Capital</th>
+                    <th>Net<br>P/L</th>
+                    <th>Actual<br>(%)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="day-cell">Sunday</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="day-cell">Monday</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="day-cell">Tuesday</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="day-cell">Wednesday</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="day-cell">Thursday</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="day-cell">Friday</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="day-cell">Saturday</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="total-row">
+                    <td colspan="2" style="font-weight:700">Weekly Total</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="rules-grid">
+            <div class="rules-box danger">
+                <div class="rules-title">🚫 Never Do</div>
+                <div class="rule-item"><div class="checkbox"></div> Trade without stop-loss</div>
+                <div class="rule-item"><div class="checkbox"></div> Risk more than 2%</div>
+                <div class="rule-item"><div class="checkbox"></div> Revenge trade</div>
+                <div class="rule-item"><div class="checkbox"></div> Move stop-loss further</div>
+            </div>
+            <div class="rules-box success">
+                <div class="rules-title">✅ Always Do</div>
+                <div class="rule-item"><div class="checkbox"></div> Check trend on higher timeframe</div>
+                <div class="rule-item"><div class="checkbox"></div> Set SL & TP before entry</div>
+                <div class="rule-item"><div class="checkbox"></div> Document every trade</div>
+                <div class="rule-item"><div class="checkbox"></div> Stop after 3 consecutive losses</div>
+            </div>
+        </div>
+        
+        <div class="summary-box">
+            <div class="section-title" style="margin:0 0 15px 0">📈 Weekly Summary</div>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <div class="label">Total P/L</div>
+                    <div class="value-line"></div>
+                </div>
+                <div class="summary-item">
+                    <div class="label">Total Trades</div>
+                    <div class="value-line"></div>
+                </div>
+                <div class="summary-item">
+                    <div class="label">Win Rate</div>
+                    <div class="value-line"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="quote-box">
+            <div class="quote-text">"Risk management isn't optional – it's everything!" 💰</div>
+        </div>
+    </div>
+
+    <!-- Page 2: Daily Details -->
+    <div class="page">
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">📝</div>
+                <div>
+                    <div class="logo-text">Daily Trading Log</div>
+                    <div class="logo-sub">Detailed Daily Breakdown</div>
+                </div>
+            </div>
+            <div class="week-info">
+                <div class="week-label">Week:</div>
+                <input type="text" class="week-input" placeholder="___">
+            </div>
+        </header>
+        
+        <div class="daily-section">
+            <div class="daily-grid">
+                <!-- Sunday -->
+                <div class="daily-box">
+                    <div class="daily-header">
+                        <span class="daily-day">Sunday</span>
+                        <input type="text" class="daily-date-input" placeholder="Date">
+                    </div>
+                    <div class="daily-row"><span class="daily-label">Starting Capital:</span><input type="text" class="daily-input"></div>
+                    <div class="daily-row"><span class="daily-label">Ending Capital:</span><input type="text" class="daily-input"></div>
+                    <div class="daily-row"><span class="daily-label">No. of Trades:</span><input type="text" class="daily-input"></div>
+                    <div class="daily-row"><span class="daily-label">P/L:</span><input type="text" class="daily-input"></div>
+                    <div style="font-size:0.8em;color:var(--text-light);margin-top:8px">Mood:</div>
+                    <div class="mood-row">
+                        <div class="mood-circle">😔</div>
+                        <div class="mood-circle">😐</div>
+                        <div class="mood-circle">🙂</div>
+                        <div class="mood-circle">😊</div>
+                        <div class="mood-circle">🤩</div>
+                    </div>
+                </div>
+                
+                <!-- Monday -->
+                <div class="daily-box">
+                    <div class="daily-header">
+                        <span class="daily-day">Monday</span>
+                        <input type="text" class="daily-date-input" placeholder="Date">
+                    </div>
+                    <div class="daily-row"><span class="daily-label">Starting Capital:</span><input type="text" class="daily-input"></div>
+                    <div class="daily-row"><span class="daily-label">Ending Capital:</span><input type="text" class="daily-input"></div>
+                    <div class="daily-row"><span class="daily-label">No. of Trades:</span><input type="text" class="daily-input"></div>
+                    <div class="daily-row"><span class="daily-label">P/L:</span><input type="text" class="daily-input"></div>
+                    <div style="font-size:0.8em;color:var(--text-light);margin-top:8px">Mood:</div>
+                    <div class="mood-row">
+                        <div class="mood-circle">😔</div>
+                        <div class="mood-circle">😐</div>
+                        <div class="mood-circle">🙂</div>
+                        <div class="mood-circle">😊</div>
+                        <div class="mood-circle">🤩</div>
+                    </div>
+                </div>
+                
+                <!-- Tuesday -->
+                <div class="daily-box">
+                    <div class="daily-header">
+                        <span class="daily-day">Tuesday</span>
+                        <input type="text" class="daily-date-input" placeholder="Date">
+                    </div>
+                    <div class="daily-row"><span class="daily-label">Starting Capital:</span><input type="text" class="daily-input"></div>
+                    <div class="daily-row"><span class="daily-label">Ending Capital:</span><input type="text" class="daily-input"></div>
+                    <div class="daily-row"><span class="daily-label">No. of Trades:</span><input type="text" class="daily-input"></div>
+                    <div class="daily-row"><span class="daily-label">P/L:</span><input type="text" class="daily-input"></div>
+                    <div style="font-size:0.8em;color:var(--text-light);margin-top:8px">Mood:</div>
+                    <div class="mood-row">
+                        <div class="mood-circle">😔</div>
+                        <div class="mood-circle">😐</div>
+                        <div class="mood-circle">🙂</div>
+                        <div class="mood-circle">😊</div>
+                        <div class="mood-circle">🤩</div>
+                    </div>
+                </div>
+                
+                <!-- Wednesday -->
+                <div class="daily-box">
+                    <div class="daily-header">
+                        <span class="daily-day">Wednesday</span>
+                        <input type="text" class="daily-date-input" placeholder="Date">
+                    </div>
+                    <div class="daily-row"><span class="daily-label">Starting Capital:</span><input type="text" class="daily-input"></div>
+                    <div class="daily-row"><span class="daily-label">Ending Capital:</span><input type="text" class="daily-input"></div>
+                    <div class="daily-row"><span class="daily-label">No. of Trades:</span><input type="text" class="daily-input"></div>
+                    <div class="daily-row"><span class="daily-label">P/L:</span><input type="text" class="daily-input"></div>
+                    <div style="font-size:0.8em;color:var(--text-light);margin-top:8px">Mood:</div>
+                    <div class="mood-row">
+                        <div class="mood-circle">😔</div>
+                        <div class="mood-circle">😐</div>
+                        <div class="mood-circle">🙂</div>
+                        <div class="mood-circle">😊</div>
+                        <div class="mood-circle">🤩</div>
+                    </div>
+                </div>
+                
+                <!-- Thursday -->
+                <div class="daily-box">
+                    <div class="daily-header">
+                        <span class="daily-day">Thursday</span>
+                        <input type="text" class="daily-date-input" placeholder="Date">
+                    </div>
+                    <div class="daily-row"><span class="daily-label">Starting Capital:</span><input type="text" class="daily-input"></div>
+                    <div class="daily-row"><span class="daily-label">Ending Capital:</span><input type="text" class="daily-input"></div>
+                    <div class="daily-row"><span class="daily-label">No. of Trades:</span><input type="text" class="daily-input"></div>
+                    <div class="daily-row"><span class="daily-label">P/L:</span><input type="text" class="daily-input"></div>
+                    <div style="font-size:0.8em;color:var(--text-light);margin-top:8px">Mood:</div>
+                    <div class="mood-row">
+                        <div class="mood-circle">😔</div>
+                        <div class="mood-circle">😐</div>
+                        <div class="mood-circle">🙂</div>
+                        <div class="mood-circle">😊</div>
+                        <div class="mood-circle">🤩</div>
+                    </div>
+                </div>
+                
+                <!-- Friday -->
+                <div class="daily-box">
+                    <div class="daily-header">
+                        <span class="daily-day">Friday</span>
+                        <input type="text" class="daily-date-input" placeholder="Date">
+                    </div>
+                    <div class="daily-row"><span class="daily-label">Starting Capital:</span><input type="text" class="daily-input"></div>
+                    <div class="daily-row"><span class="daily-label">Ending Capital:</span><input type="text" class="daily-input"></div>
+                    <div class="daily-row"><span class="daily-label">No. of Trades:</span><input type="text" class="daily-input"></div>
+                    <div class="daily-row"><span class="daily-label">P/L:</span><input type="text" class="daily-input"></div>
+                    <div style="font-size:0.8em;color:var(--text-light);margin-top:8px">Mood:</div>
+                    <div class="mood-row">
+                        <div class="mood-circle">😔</div>
+                        <div class="mood-circle">😐</div>
+                        <div class="mood-circle">🙂</div>
+                        <div class="mood-circle">😊</div>
+                        <div class="mood-circle">🤩</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section-title">📚 Weekly Lessons & Insights</div>
+        <div class="notes-box">
+            <div class="notes-lines">
+                <div class="note-line"></div>
+                <div class="note-line"></div>
+                <div class="note-line"></div>
+                <div class="note-line"></div>
+                <div class="note-line"></div>
+            </div>
+        </div>
+        
+        <div class="quote-box">
+            <div class="quote-text">"The trend is your friend. Until it isn't." 📈</div>
+        </div>
+    </div>
+
+    <button class="print-btn no-print" onclick="window.print()">
+        🖨️ Print Planner
+    </button>
+</body>
+</html>
